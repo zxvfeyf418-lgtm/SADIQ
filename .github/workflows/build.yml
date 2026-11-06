@@ -46,7 +46,7 @@ jobs:
         # Pinned to AGP 8.7.3's default. android.ndkDirectory otherwise
         # resolves to whatever the runner happens to ship, which changes the
         # toolchain the datapath is compiled with between runs.
-        run: sdkmanager --install "ndk;27.0.12077973"
+        run: sdkmanager --install "ndk;27.0.12077973" "platforms;android-36"
 
       - name: Install gomobile
         # The gomobileBind task looks for the binary at ~/go/bin specifically,

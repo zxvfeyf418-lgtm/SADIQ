@@ -46,7 +46,7 @@ val gomobileBind by tasks.registering(Exec::class) {
 
 android {
     namespace = "dev.shizzi"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "dev.shizzi"
