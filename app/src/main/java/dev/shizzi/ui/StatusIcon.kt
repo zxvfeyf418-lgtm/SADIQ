@@ -59,7 +59,7 @@ fun StatusIcon(status: UiStatus, isWaitingForUsb: Boolean) {
     ) { glyph ->
         Icon(
             imageVector = glyph,
-            contentDescription = if (isWaitingForUsb) "Waiting for USB" else descriptionFor(status),
+            contentDescription = if (isWaitingForUsb) "بانتظار USB" else descriptionFor(status),
             tint = tint,
             modifier = Modifier
                 .size(StatusIconSize)
@@ -95,10 +95,10 @@ private fun glyphFor(status: UiStatus): ImageVector = when (status) {
 }
 
 private fun descriptionFor(status: UiStatus): String = when (status) {
-    UiStatus.READY -> "Not connected"
-    UiStatus.LOADING -> "Connecting"
-    UiStatus.CONNECTED -> "Connected"
-    UiStatus.ERROR -> "Failed"
+    UiStatus.READY -> "غير متصل"
+    UiStatus.LOADING -> "جارٍ الاتصال"
+    UiStatus.CONNECTED -> "متصل"
+    UiStatus.ERROR -> "فشل"
 }
 
 @Composable
@@ -120,7 +120,7 @@ fun ShizukuBadge(state: ShizukuState) {
 
 private fun badgeText(state: ShizukuState): String? = when (state) {
     is ShizukuState.Ready -> null
-    is ShizukuState.NotInstalled -> "NO SHIZUKU"
-    is ShizukuState.NotRunning -> "SHIZUKU OFF"
-    is ShizukuState.PermissionRequired -> "PERMISSION NEEDED"
+    is ShizukuState.NotInstalled -> "Shizuku غير موجود"
+    is ShizukuState.NotRunning -> "Shizuku متوقف"
+    is ShizukuState.PermissionRequired -> "الإذن مطلوب"
 }

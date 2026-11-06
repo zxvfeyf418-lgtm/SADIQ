@@ -1,5 +1,6 @@
 package dev.shizzi
 
+import android.app.Activity
 import android.content.pm.PackageManager
 import android.net.VpnService
 import android.os.Bundle
@@ -12,30 +13,48 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.animation.Crossfade
+import androidx.compose.runtime.collectAsState
 import androidx.core.view.WindowCompat
 import dev.shizzi.ui.Screen
 import dev.shizzi.ui.theme.Appearance
 import dev.shizzi.ui.theme.ShizziTheme
-import dev.shizzi.vpn.VpnActions
-import dev.shizzi.vpn.VpnUiState
-import dev.shizzi.vpn.VpnViewModel
-import dev.shizzi.vpn.XrayVpnService
-import dev.shizzi.vpn.isActive
+import dev.shizzi.ui.twon5a.WelcomeIntro
+import dev.shizzi.warp.TunnelViewModel
+import dev.shizzi.warp.WarpUiState
+import dev.shizzi.warp.WarpViewModel
 import rikka.shizuku.Shizuku
 
 class MainActivity : ComponentActivity() {
 
     private val viewModel: SessionViewModel by viewModels()
 
-    private val vpnViewModel: VpnViewModel by viewModels()
+    private val warpViewModel: WarpViewModel by viewModels()
 
-    // Android shows its own "allow this app to set up a VPN" dialog; the service
-    // may only start once that returns RESULT_OK.
-    private val vpnConsent =
+    private val tunnelViewModel: TunnelViewModel by viewModels()
+
+    // The tunnel to start once the system's VPN consent dialog is accepted.
+    private var pendingTunnel: String? = null
+
+    private val vpnConsentLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) startVpnNow()
+            val name = pendingTunnel
+            pendingTunnel = null
+
+            if (result.resultCode == Activity.RESULT_OK && name != null) {
+                tunnelViewModel.connect(name)
+            } else {
+                tunnelViewModel.onVpnPermissionDenied()
+            }
+        }
+
+    private val importLauncher =
+        registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+            if (uri != null) tunnelViewModel.importFrom(uri)
         }
 
     private val permissionListener =
@@ -96,18 +115,21 @@ class MainActivity : ComponentActivity() {
                     val diagnostics by viewModel.diagnosticsState.collectAsState()
                     val compatibility by viewModel.compatibilityState.collectAsState()
                     val permissions by viewModel.permissionState.collectAsState()
-                    val servers by vpnViewModel.servers.collectAsState()
-                    val latency by vpnViewModel.latency.collectAsState()
-                    val vpnState by vpnViewModel.vpn.collectAsState()
-                    val feedback by vpnViewModel.feedback.collectAsState()
+                    val warp by warpViewModel.state.collectAsState()
+                    val connection by tunnelViewModel.state.collectAsState()
+                    var showIntro by rememberSaveable { mutableStateOf(true) }
 
-                    ShizziApp(
+                    Crossfade(targetState = showIntro, label = "intro") { isIntro ->
+                      if (isIntro) {
+                        WelcomeIntro(onFinished = { showIntro = false })
+                      } else ShizziApp(
                         state = AppState(
                             session = state,
                             settings = loaded,
                             diagnostics = diagnostics,
                             permissions = permissions,
-                            vpn = VpnUiState(servers, latency, vpnState, feedback),
+                            warp = warp,
+                            connection = connection,
                         ),
                         onboarding = OnboardingEntry(
                             compatibility = compatibility,
@@ -138,17 +160,22 @@ class MainActivity : ComponentActivity() {
                             onSetAutomation = viewModel::setAutomation,
                             onRegenerateAutomationToken =
                                 viewModel::regenerateAutomationToken,
-                            vpn = VpnActions(
-                                onToggle = ::toggleVpn,
-                                onSave = vpnViewModel::save,
-                                onSelect = vpnViewModel::select,
-                                onRemove = vpnViewModel::remove,
-                                onTestAll = vpnViewModel::testAll,
-                                onClearFeedback = vpnViewModel::clearFeedback,
-                            ),
+                            onGenerateWarp = warpViewModel::generate,
+                            onSetWarpObfuscated = warpViewModel::setObfuscated,
+                            onSelectWarpEndpoint = warpViewModel::selectEndpoint,
+                            onSaveWarp = warpViewModel::saveToDownloads,
+                            onWarpMessage = warpViewModel::showMessage,
+                            onSelectConfig = tunnelViewModel::select,
+                            onDeleteConfig = tunnelViewModel::delete,
+                            onImportConfig = { importLauncher.launch(arrayOf("*/*")) },
+                            onConnect = ::connectTunnel,
+                            onDisconnect = tunnelViewModel::disconnect,
+                            onRunWarpInApp = ::runWarpInApp,
+                            onDismissConnectionMessage = tunnelViewModel::dismissMessage,
                         ),
                         startScreen = startScreen,
-                    )
+                      )
+                    }
                 }
             }
         }
@@ -156,19 +183,27 @@ class MainActivity : ComponentActivity() {
         holdFirstFrameUntilSettingsLoad()
     }
 
-    private fun toggleVpn() {
-        if (vpnViewModel.vpn.value.isActive) {
-            XrayVpnService.stop(this)
-            return
-        }
-
+    /** Asks for the system's VPN consent first when it has not been granted yet. */
+    private fun connectTunnel(name: String) {
         val consent = VpnService.prepare(this)
-        if (consent != null) vpnConsent.launch(consent) else startVpnNow()
+
+        if (consent == null) {
+            tunnelViewModel.connect(name)
+        } else {
+            pendingTunnel = name
+            vpnConsentLauncher.launch(consent)
+        }
     }
 
-    private fun startVpnNow() {
-        val server = vpnViewModel.servers.value.selected ?: return
-        XrayVpnService.start(this, server)
+    /** Saves the generated profile as it is currently shown, then starts it. */
+    private fun runWarpInApp() {
+        val done = warpViewModel.state.value as? WarpUiState.Done ?: return
+
+        tunnelViewModel.saveGenerated(
+            rawName = done.profile.name,
+            text = done.profile.toConfig(done.isObfuscated),
+            onSaved = ::connectTunnel,
+        )
     }
 
     private fun holdFirstFrameUntilSettingsLoad() {

@@ -11,8 +11,8 @@ sealed interface DownstreamReading {
 val DownstreamReading.problem: String?
     get() = when (this) {
         DownstreamReading.None -> null
-        DownstreamReading.Unknown -> "dumpsys tethering timed out; downstream state unknown"
-        is DownstreamReading.Tethered -> "downstream still tethered: $names"
+        DownstreamReading.Unknown -> "انتهت مهلة قراءة حالة المشاركة؛ الحالة غير معروفة"
+        is DownstreamReading.Tethered -> "المشاركة ما زالت تعمل: $names"
     }
 
 fun readDownstream(observation: UpstreamObservation, types: Collection<TetheringType>): DownstreamReading {

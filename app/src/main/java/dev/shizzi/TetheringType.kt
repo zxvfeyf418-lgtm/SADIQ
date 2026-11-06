@@ -2,8 +2,8 @@ package dev.shizzi
 
 /** TetheringManager.TETHERING_* constants for the downstreams Shizzi can bring up. */
 enum class TetheringType(val code: Int, val label: String) {
-    WIFI(0, "hotspot"),
-    USB(1, "usb tethering"),
+    WIFI(0, "النقطة الساخنة"),
+    USB(1, "مشاركة USB"),
 }
 
 private val USB_INTERFACE_PATTERN = Regex("""^(rndis|ncm|usb)\d*$""")

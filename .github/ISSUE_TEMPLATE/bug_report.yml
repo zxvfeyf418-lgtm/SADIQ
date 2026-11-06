@@ -47,7 +47,7 @@ body:
     id: vpn
     attributes:
       label: VPN app (if sharing a VPN)
-      placeholder: v2rayNG 1.9 in VPN mode
+      placeholder: AmneziaWG أو WireGuard
   - type: textarea
     id: log
     attributes:

@@ -22,15 +22,15 @@ import dev.shizzi.ui.theme.ShizziTheme
 private val CheckSize = 20.dp
 
 fun usbTetheringLabel(mode: UsbTethering): String = when (mode) {
-    UsbTethering.AUTO -> "Auto"
-    UsbTethering.ALWAYS -> "Always"
-    UsbTethering.NEVER -> "Never"
+    UsbTethering.AUTO -> "تلقائي"
+    UsbTethering.ALWAYS -> "دائمًا"
+    UsbTethering.NEVER -> "أبدًا"
 }
 
 private fun descriptionOf(mode: UsbTethering): String = when (mode) {
-    UsbTethering.AUTO -> "Also share over USB when a cable is connected"
-    UsbTethering.ALWAYS -> "Share over USB only; requires a cable"
-    UsbTethering.NEVER -> "Share through the hotspot only"
+    UsbTethering.AUTO -> "المشاركة عبر USB أيضًا عند توصيل كبل"
+    UsbTethering.ALWAYS -> "المشاركة عبر USB فقط، ويلزم كبل"
+    UsbTethering.NEVER -> "المشاركة عبر نقطة الاتصال فقط"
 }
 
 @Composable
@@ -41,7 +41,7 @@ fun UsbTetheringPicker(
 ) {
     ThemedBottomSheet(onDismiss = onDismiss) {
         Text(
-            text = "USB tethering",
+            text = "مشاركة الإنترنت عبر USB",
             style = ShizziTheme.typography.heading,
             color = ShizziTheme.colors.onSurface,
         )

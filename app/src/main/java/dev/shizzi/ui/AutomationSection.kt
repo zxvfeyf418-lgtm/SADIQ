@@ -33,8 +33,8 @@ fun AutomationSection(
 ) {
     SettingsToggle(
         label = SettingsText(
-            title = "Automation",
-            subtitle = "Allows tasker apps to manage Shizzi",
+            title = "الأتمتة",
+            subtitle = "يسمح لتطبيقات مثل Tasker بالتحكم بالتطبيق",
         ),
         isChecked = state.isEnabled,
         onCheckedChange = actions.onSetEnabled,
@@ -64,7 +64,7 @@ private fun AutomationDetails(
 
     Column {
         SettingsAction(
-            label = SettingsText(title = "View setup instructions"),
+            label = SettingsText(title = "عرض تعليمات الإعداد"),
             onClick = { isExpanded = true },
         )
 
@@ -73,7 +73,7 @@ private fun AutomationDetails(
             actions = TokenActions(
                 onCopy = {
                     clipboard.setText(AnnotatedString(state.token))
-                    toasts.show(copiedToast("Token"))
+                    toasts.show(copiedToast("الرمز"))
                 },
                 onRegenerate = actions.onRegenerateToken,
             ),

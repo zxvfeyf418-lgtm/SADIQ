@@ -92,9 +92,10 @@ fun SettingsPage(
         label = "settingsBusy",
     )
 
+    dev.shizzi.ui.twon5a.TwoN5aRtl {
     Column(modifier = Modifier.fillMaxSize().systemBarsPadding()) {
 
-        ScreenHeader(title = "Settings", onBack = onBack)
+        ScreenHeader(title = "الإعدادات", onBack = onBack)
 
         Column(
             modifier = Modifier
@@ -110,6 +111,7 @@ fun SettingsPage(
             Spacer(Modifier.height(ShizziTheme.spacing.xxl))
         }
     }
+    }
 }
 
 @Immutable
@@ -123,7 +125,7 @@ private fun settingsSections(
     actions: SettingsActions,
     toasts: ToastState,
 ): List<SettingsSectionSpec> = listOf(
-    SettingsSectionSpec("Tethering") {
+    SettingsSectionSpec("مشاركة الإنترنت") {
         TetheringSection(
             selected = state.usbTethering,
             onSelect = actions.onSetUsbTethering,
@@ -131,7 +133,7 @@ private fun settingsSections(
         )
     },
 
-    SettingsSectionSpec("Appearance") {
+    SettingsSectionSpec("المظهر") {
         AppearanceSection(
             state = AppearanceState(
                 theme = state.theme,
@@ -148,7 +150,7 @@ private fun settingsSections(
         )
     },
 
-    SettingsSectionSpec("Permissions") {
+    SettingsSectionSpec("الأذونات") {
         PermissionsSection(
             state = PermissionsSectionState(
                 shizuku = state.shizuku,
@@ -159,7 +161,7 @@ private fun settingsSections(
         )
     },
 
-    SettingsSectionSpec("Advanced") {
+    SettingsSectionSpec("متقدم") {
         VpnSection(selected = state.vpnMode, onSelect = actions.onSetVpnMode)
 
         AutomationSection(
@@ -169,11 +171,11 @@ private fun settingsSections(
         )
     },
 
-    SettingsSectionSpec("Developer") {
+    SettingsSectionSpec("المطوّر") {
         DeveloperSection(isLogging = state.isLogging, actions = actions)
     },
 
-    SettingsSectionSpec("About") { AboutSection(toasts) },
+    SettingsSectionSpec("حول") { AboutSection(toasts) },
 )
 
 /** Staggers each section in on first composition so the page assembles itself. */
@@ -222,23 +224,23 @@ private fun Modifier.inert(isBusy: Boolean): Modifier = when {
 @Composable
 private fun DeveloperSection(isLogging: Boolean, actions: SettingsActions) {
     SettingsToggle(
-        label = SettingsText(title = "Logging"),
+        label = SettingsText(title = "التسجيل"),
         isChecked = isLogging,
         onCheckedChange = actions.onSetLogging,
     )
 
     SettingsAction(
-        label = SettingsText(title = "View logs"),
+        label = SettingsText(title = "عرض السجل"),
         onClick = actions.onOpenLog,
     )
 
     SettingsAction(
-        label = SettingsText(title = "Run diagnostics"),
+        label = SettingsText(title = "تشغيل التشخيص"),
         onClick = actions.onRunProbes,
     )
 
     SettingsAction(
-        label = SettingsText(title = "Restart onboarding"),
+        label = SettingsText(title = "إعادة التهيئة الأولية"),
         onClick = actions.onRestartOnboarding,
     )
 }
@@ -257,13 +259,13 @@ private fun AboutSection(toasts: ToastState) {
     )
 
     SettingsAction(
-        label = SettingsText(title = "Report a bug"),
+        label = SettingsText(title = "الإبلاغ عن خلل"),
         isExternal = true,
-        onClick = { open("the issue tracker", ISSUE_URL) },
+        onClick = { open("صفحة المشكلات", ISSUE_URL) },
     )
 
     SettingsAction(
-        label = SettingsText(title = "Author", subtitle = "carlelieser.dev"),
+        label = SettingsText(title = "المطوّر", subtitle = "carlelieser.dev"),
         isExternal = true,
         onClick = { open("carlelieser.dev", AUTHOR_URL) },
     )

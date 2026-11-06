@@ -38,7 +38,7 @@ fun SessionUiState.asStopped(): SessionUiState = copy(
     isBusy = false,
     status = UiStatus.READY,
     lastError = "",
-    detail = "Stopped",
+    detail = "متوقف",
     interfaceName = "",
     isVpnBound = false,
     isVpnBypassed = false,
@@ -155,10 +155,9 @@ class TetherClient {
         } catch (timeout: TimeoutCancellationException) {
             pendingBind = null
             throw IllegalStateException(
-                "bindUserService: Shizuku returned no binder for the privileged " +
-                    "helper within ${BIND_TIMEOUT_MS}ms. The shell process either " +
-                    "never started or exited before handing one back; " +
-                    "`adb logcat -s ShizukuServiceStarter:*` carries the reason.",
+                "لم يرد Shizuku بالخدمة المميّزة خلال ${BIND_TIMEOUT_MS} ملّي ثانية. " +
+                    "إما أن العملية لم تبدأ أو أنها أُغلقت قبل الرد؛ " +
+                    "السبب يظهر في `adb logcat -s ShizukuServiceStarter:*`.",
                 timeout,
             )
         }
@@ -233,7 +232,7 @@ class TetherClient {
             bound.clearLog()
         }.fold(
             onSuccess = { null },
-            onFailure = { failure -> failure.message ?: "could not reach Shizuku" },
+            onFailure = { failure -> failure.message ?: "تعذّر الاتصال بـ Shizuku" },
         )
     }
 
@@ -242,7 +241,7 @@ class TetherClient {
             .fold(
                 onSuccess = { null },
                 onFailure = { failure ->
-                    "could not reach Shizuku to drop the hotspot: ${failure.message}"
+                    "تعذّر الاتصال بـ Shizuku لإيقاف النقطة الساخنة: ${failure.message}"
                 },
             )
     }
@@ -254,8 +253,8 @@ class TetherClient {
     private fun verifyContract(bound: ITetherService) {
         val remote = bound.contractVersion
         check(remote == TetherService.CONTRACT_VERSION) {
-            "UserService is stale: app is build ${TetherService.CONTRACT_VERSION}, " +
-                "shell process reports $remote — press Stop then Start to reload it"
+            "الخدمة المميّزة قديمة: إصدار التطبيق ${TetherService.CONTRACT_VERSION}، " +
+                "وإصدار الخدمة $remote — اضغط إيقاف ثم ابدأ لإعادة تحميلها"
         }
     }
 

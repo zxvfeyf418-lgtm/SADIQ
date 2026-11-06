@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.LineHeightStyle
-import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import dev.shizzi.ui.theme.ShizziTheme
 
@@ -24,7 +23,6 @@ val StepTitleStyle: TextStyle
 
         lineBreak = LineBreak.Heading,
 
-        letterSpacing = (-0.04).em,
         lineHeightStyle = LineHeightStyle(
             alignment = LineHeightStyle.Alignment.Center,
             trim = LineHeightStyle.Trim.Both,

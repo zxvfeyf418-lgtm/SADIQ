@@ -6,14 +6,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import dev.shizzi.vpn.ServerRepository
 import org.lsposed.hiddenapibypass.HiddenApiBypass
 
 class App : Application() {
 
     val settingsStore: SettingsStore by lazy { SettingsStore(this) }
-
-    val serverRepository: ServerRepository by lazy { ServerRepository(this) }
 
     override fun onCreate() {
         super.onCreate()

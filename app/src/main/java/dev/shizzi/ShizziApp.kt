@@ -8,7 +8,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
 import dev.shizzi.ui.Screen
-import dev.shizzi.vpn.VpnUiState
+import dev.shizzi.warp.ConnectionUiState
+import dev.shizzi.warp.WarpUiState
 import dev.shizzi.ui.theme.ShizziTheme
 import dev.shizzi.ui.theme.standardTween
 import dev.shizzi.ui.onboarding.OnboardingActions
@@ -29,7 +30,8 @@ data class AppState(
     val settings: Settings,
     val diagnostics: DiagnosticsState,
     val permissions: List<PermissionStatus>,
-    val vpn: VpnUiState = VpnUiState(),
+    val warp: WarpUiState = WarpUiState.Idle,
+    val connection: ConnectionUiState = ConnectionUiState(),
 )
 
 private const val HandoffScale = 0.94f

@@ -58,12 +58,12 @@ class UsbDownstream(
 
         if (reconnect.hasGivenUp(now)) {
             val minutes = UsbReconnect.GIVE_UP_AFTER_MS / 60_000
-            return DownstreamHealth.Ended("usb not connected for $minutes minutes")
+            return DownstreamHealth.Ended("لم يتم توصيل USB لمدة $minutes دقيقة")
         }
         return DownstreamHealth.Awaiting
     }
 
     companion object {
-        const val NO_USB_CABLE = "Failed to start. USB connection required."
+        const val NO_USB_CABLE = "تعذّر البدء. يلزم توصيل USB."
     }
 }

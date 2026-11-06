@@ -36,7 +36,7 @@ val gomobileBind by tasks.registering(Exec::class) {
         outputAar.get().asFile.parentFile.mkdirs()
     }
 
-    // build-aar.sh runs `go mod tidy` (resolves the embedded Xray core) and then
+    // build-aar.sh runs `go mod tidy` (resolves Go dependencies) and then
     // gomobile bind. See datapath/build-aar.sh.
     commandLine(
         File(goModule.asFile, "build-aar.sh").absolutePath,
@@ -53,8 +53,8 @@ android {
 
         minSdk = 30
         targetSdk = 35
-        versionCode = 8
-        versionName = "1.0.0"
+        versionCode = 9
+        versionName = "1.1.0"
 
         buildConfigField("int", "SERVICE_BUILD_ID", "${sourceFingerprint(projectDir)}")
 
@@ -148,6 +148,10 @@ dependencies {
     implementation("dev.rikka.shizuku:provider:13.1.5")
 
     implementation("org.lsposed.hiddenapibypass:hiddenapibypass:4.3")
+
+    // AmneziaWG tunnel library (GoBackend + native libam-go): runs the VPN inside the app.
+    // Package org.amnezia.awg, minSdk 24, AAR on Maven Central.
+    implementation("com.zaneschepke:amneziawg-android:2.3.7")
 
     testImplementation("junit:junit:4.13.2")
 

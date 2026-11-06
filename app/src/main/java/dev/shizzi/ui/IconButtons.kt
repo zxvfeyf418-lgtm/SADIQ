@@ -63,7 +63,7 @@ fun ShizziCompactIconButton(
 fun BackButton(onBack: () -> Unit) {
     ShizziIconButton(
         icon = Icons.AutoMirrored.Filled.ArrowBack,
-        contentDescription = "Back",
+        contentDescription = "رجوع",
         onClick = onBack,
     )
 }

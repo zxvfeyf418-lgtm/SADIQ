@@ -64,10 +64,10 @@ fun rememberToastState(): ToastState = remember { ToastState() }
 
 fun unopenedToast(label: String): Toast = Toast(
     key = ToastKeys.OPEN,
-    message = "Couldn't open $label",
+    message = "تعذّر فتح $label",
 )
 
 fun copiedToast(label: String): Toast = Toast(
     key = ToastKeys.COPY,
-    message = "$label copied",
+    message = "تم نسخ $label",
 )

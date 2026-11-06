@@ -87,7 +87,7 @@ fun CancelButton(onClick: () -> Unit) {
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            text = "CANCEL",
+            text = "إلغاء",
             style = ShizziTheme.typography.label,
             color = ShizziTheme.colors.onSurfaceMuted,
         )

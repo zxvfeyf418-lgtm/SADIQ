@@ -5,9 +5,13 @@ and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.1.0]
+
+- 2n5a: in-app VPN. A new «الاتصال» section on the files screen lists saved configs, imports a `.conf` from the device and starts/stops the tunnel with one button, using the AmneziaWG library (`com.zaneschepke:amneziawg-android:2.3.7`). A freshly generated profile has a «تشغيل داخل التطبيق» button that saves and starts it. Hotspot sharing follows this tunnel like any system VPN.
+
 ## [1.0.0]
 
-- 2n5a: V2Ray/Xray VPN (VLESS, VMess, Trojan, Shadowsocks), Arabic RTL UI, hotspot sharing through the VPN.
+- 2n5a: full Arabic RTL interface, animated welcome screen, and an «إنشاء ملفات» section that generates Cloudflare WARP configs (AmneziaWG / WireGuard) on-device. The experimental Xray VPN was removed; hotspot sharing still follows any system VPN.
 
 ## [0.5.0] - 2026-10-30
 

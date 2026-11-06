@@ -69,11 +69,11 @@ class UpstreamTolerance(
     }
 
     private fun describe(reading: UpstreamReading, names: List<String>): String = when (reading) {
-        UpstreamReading.TIMED_OUT -> "upstream check timed out $strikes times"
+        UpstreamReading.TIMED_OUT -> "انتهت مهلة فحص الاتصال $strikes مرات"
         UpstreamReading.ABSENT ->
-            "upstream reported no interface for $strikes checks, expected $expectedInterface"
+            "لم يُرصد أي اتصال في $strikes فحوصات، والمتوقع $expectedInterface"
 
-        else -> "upstream drifted from $expectedInterface to $names"
+        else -> "تحوّل الاتصال من $expectedInterface إلى $names"
     }
 
     private companion object {

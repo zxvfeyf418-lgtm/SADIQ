@@ -30,13 +30,13 @@ fun AppearanceSection(state: AppearanceState, actions: AppearanceActions) {
     ThemePicker(selected = state.theme, onSelect = actions.onSetTheme)
 
     SettingsChoice(
-        label = SettingsText(title = "Design"),
+        label = SettingsText(title = "التصميم"),
         value = designLabel(state.design),
         onClick = { openSheet = AppearanceSheet.DESIGN },
     )
 
     SettingsChoice(
-        label = SettingsText(title = "Accent"),
+        label = SettingsText(title = "لون التمييز"),
         value = accentLabel(state.accent),
         onClick = { openSheet = AppearanceSheet.ACCENT },
     )

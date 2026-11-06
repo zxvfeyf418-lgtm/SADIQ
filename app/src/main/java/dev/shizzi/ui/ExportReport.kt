@@ -27,7 +27,7 @@ fun Context.exportReport(report: String) {
         .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
     try {
-        startActivity(Intent.createChooser(intent, "Export report").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+        startActivity(Intent.createChooser(intent, "تصدير التقرير").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     } catch (absent: ActivityNotFoundException) {
         SessionLog.warn("no app to receive the report: ${absent.message}")
     }

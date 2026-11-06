@@ -71,8 +71,8 @@ object Automation {
 
     fun describe(refusal: AutomationRefusal): String = when (refusal) {
         AutomationRefusal.Disabled ->
-            "automation is off; enable it in Settings › Advanced"
-        AutomationRefusal.BadToken -> "token does not match the one set in Settings"
-        AutomationRefusal.UnknownAction -> "unrecognized action"
+            "الأتمتة متوقفة؛ فعّلها من الإعدادات › متقدم"
+        AutomationRefusal.BadToken -> "الرمز لا يطابق الرمز المحدد في الإعدادات"
+        AutomationRefusal.UnknownAction -> "إجراء غير معروف"
     }
 }

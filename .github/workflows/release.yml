@@ -64,10 +64,8 @@ jobs:
           go install golang.org/x/mobile/cmd/gomobile@latest
           gomobile init
 
-      - name: Resolve Go dependencies (embedded Xray core)
-        # Xray is pinned by commit in resolve-deps.sh (its tags are not valid Go versions);
-        # go.sum for its dependency tree is generated here,
-        # not committed. Needs the Go module proxy, which GitHub runners have.
+      - name: Resolve Go dependencies
+        # gomobile needs golang.org/x/mobile/bind in go.mod; resolve-deps.sh adds it.
         run: ./datapath/resolve-deps.sh
 
       - name: Set up Gradle

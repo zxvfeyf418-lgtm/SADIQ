@@ -169,7 +169,7 @@ class SessionService : Service() {
                 isBusy = false,
                 status = UiStatus.ERROR,
                 interfaceName = "",
-                lastError = "Session ended unexpectedly — dropping the hotspot…",
+                lastError = "انتهت الجلسة بشكل غير متوقع — جارٍ إيقاف النقطة الساخنة…",
             )
         }
         publishState()

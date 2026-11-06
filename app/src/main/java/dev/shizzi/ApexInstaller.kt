@@ -20,7 +20,7 @@ fun parseStagingOutcome(report: String): StagingOutcome {
     return StagingOutcome(
         isStaged = parsed?.optBoolean("staged") == true,
         rawOutput = parsed?.optString("output").orEmpty()
-            .ifEmpty { "not reported by the privileged process" },
+            .ifEmpty { "لم تُبلّغ بها العملية المميّزة" },
     )
 }
 
@@ -56,7 +56,7 @@ class ApexInstaller(private val deadlineMs: Long = DEFAULT_DEADLINE_MS) {
             isStaged = didExit && output.contains(SUCCESS_MARKER, ignoreCase = true),
             rawOutput = when {
                 didExit -> output
-                else -> "pm install did not exit within ${deadlineMs}ms\n$output"
+                else -> "لم ينتهِ التثبيت خلال ${deadlineMs} ملّي ثانية\n$output"
             },
         )
     }

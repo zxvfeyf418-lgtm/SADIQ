@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Builds datapath.aar for Gradle: resolves the embedded Xray core, then gomobile bind.
+# Builds datapath.aar for Gradle: resolves Go dependencies, then gomobile bind.
 # Usage: build-aar.sh <output.aar>   (run from the datapath directory by Gradle)
 set -euo pipefail
 
@@ -13,7 +13,4 @@ if ! command -v gomobile >/dev/null 2>&1; then
 fi
 
 ./resolve-deps.sh
-# -checklinkname=0: Xray's dependency github.com/wlynxg/anet reaches into
-# net.zoneCache via go:linkname, which the Go linker rejects by default
-# ("invalid reference to net.zoneCache").
-gomobile bind -target=android/arm64 -androidapi 24 -ldflags="-checklinkname=0" -o "$out" .
+gomobile bind -target=android/arm64 -androidapi 24 -o "$out" .

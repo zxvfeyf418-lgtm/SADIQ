@@ -29,7 +29,7 @@ import dev.shizzi.ui.theme.standardSpring
 import dev.shizzi.ui.theme.standardTween
 
 private fun buttonLabel(status: UiStatus): String =
-    if (status == UiStatus.CONNECTED) "Stop" else "Start"
+    if (status == UiStatus.CONNECTED) "إيقاف" else "تشغيل"
 
 private fun buttonState(state: SessionUiState): ConnectButtonState = when {
     state.status == UiStatus.LOADING -> ConnectButtonState.LOADING
@@ -101,7 +101,7 @@ private fun HomeHeader(
 
         ShizziIconButton(
             icon = Icons.Filled.Settings,
-            contentDescription = "Settings",
+            contentDescription = "الإعدادات",
             onClick = onOpenSettings,
             tint = ShizziTheme.colors.onSurfaceMuted,
         )

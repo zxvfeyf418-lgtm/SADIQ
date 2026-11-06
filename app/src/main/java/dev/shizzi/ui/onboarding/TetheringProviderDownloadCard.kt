@@ -32,7 +32,7 @@ fun TetheringProviderDownloadCard(state: CompatibilityState, hasNetwork: Boolean
             verticalArrangement = Arrangement.spacedBy(ShizziTheme.spacing.xs),
         ) {
             Text(
-                text = "Tethering module",
+                text = "وحدة المشاركة",
                 style = ShizziTheme.typography.subheading,
                 color = ShizziTheme.colors.onSurface,
             )
@@ -80,19 +80,19 @@ private fun FailureDetail(reason: String) {
 }
 
 private fun bodyFor(state: CompatibilityState, hasNetwork: Boolean): String = when {
-    state is CompatibilityState.Downloading -> "Downloading the module…"
+    state is CompatibilityState.Downloading -> "جارٍ تنزيل الوحدة…"
 
     state is CompatibilityState.DownloadFailed && state.failure.isConnectivity ->
-        "Couldn't reach the network to download the module. Reconnect and try again."
+        "تعذّر الوصول إلى الشبكة لتنزيل الوحدة. أعد الاتصال وحاول مرة أخرى."
 
     state is CompatibilityState.DownloadFailed ->
-        "The download couldn't be verified, so nothing was installed."
+        "تعذّر التحقق من التنزيل، لذلك لم يُثبَّت شيء."
 
     !hasNetwork ->
-        "Your phone needs the newer tethering module to route the hotspot. " +
-            "Connect to a network to download it."
+        "يحتاج هاتفك إلى وحدة مشاركة أحدث لتوجيه نقطة الاتصال. " +
+            "اتصل بشبكة لتنزيلها."
 
     else ->
-        "Your phone can run this app once it has a newer tethering module. " +
-            "It's about 3 MB, and installing it needs one restart."
+        "يعمل التطبيق على هاتفك بعد تثبيت وحدة مشاركة أحدث. " +
+            "حجمها نحو 3 ميغابايت، ويتطلب تثبيتها إعادة تشغيل واحدة."
 }

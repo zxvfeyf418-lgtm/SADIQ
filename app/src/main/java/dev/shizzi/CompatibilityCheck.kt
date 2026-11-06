@@ -27,8 +27,8 @@ class CompatibilityCheck(private val context: Context) {
             capability = Capability.TEST_NETWORK,
             isPresent = api.isAvailable,
             detail = when {
-                api.isAvailable -> "getSystemService(\"test_network\") returned an instance"
-                else -> "test_network service or TestNetworkManager class unavailable"
+                api.isAvailable -> "خدمة test_network متاحة"
+                else -> "خدمة test_network أو الصنف TestNetworkManager غير متاح"
             },
         )
     }
@@ -39,7 +39,7 @@ class CompatibilityCheck(private val context: Context) {
         return CapabilityResult(
             capability = Capability.PREFER_TEST_NETWORKS,
             isPresent = failure == null,
-            detail = failure ?: "TetheringManager.setPreferTestNetworks resolved",
+            detail = failure ?: "الدالة setPreferTestNetworks متاحة",
         )
     }
 }
@@ -66,7 +66,7 @@ fun parseCapabilities(report: String): List<CapabilityResult> {
             capability = capability,
             isPresent = entry?.optBoolean("present") == true,
             detail = entry?.optString("detail").orEmpty()
-                .ifEmpty { "not reported by the privileged process" },
+                .ifEmpty { "لم تُبلّغ بها العملية المميّزة" },
         )
     }
 }

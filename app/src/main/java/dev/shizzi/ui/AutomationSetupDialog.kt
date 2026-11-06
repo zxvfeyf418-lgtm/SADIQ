@@ -50,19 +50,19 @@ private fun ColumnScope.SetupContent(token: String, toasts: ToastState) {
     var command by remember { mutableStateOf(AutomationCommand.START) }
 
     Text(
-        text = "Setup",
+        text = "الإعداد",
         style = ShizziTheme.typography.heading,
         color = ShizziTheme.colors.onSurface,
     )
 
     Text(
-        text = "Send a broadcast intent with these values.",
+        text = "أرسل Broadcast Intent بهذه القيم.",
         style = ShizziTheme.typography.body,
         color = ShizziTheme.colors.onSurfaceMuted,
     )
 
     CopyableField(
-        field = SetupField("Action", Automation.actionFor(command)),
+        field = SetupField("الإجراء", Automation.actionFor(command)),
         toasts = toasts,
     )
 
@@ -74,11 +74,11 @@ private fun ColumnScope.SetupContent(token: String, toasts: ToastState) {
 }
 
 private fun connectionFields(token: String) = listOf(
-    SetupField("Package", "dev.shizzi"),
-    SetupField("Class", "dev.shizzi.AutomationReceiver"),
-    SetupField("Target", "Broadcast receiver"),
-    SetupField("Extra name", Automation.EXTRA_TOKEN),
-    SetupField("Extra value", token),
+    SetupField("الحزمة", "dev.shizzi"),
+    SetupField("الفئة", "dev.shizzi.AutomationReceiver"),
+    SetupField("الهدف", "مستقبِل البث"),
+    SetupField("اسم الإضافة", Automation.EXTRA_TOKEN),
+    SetupField("قيمة الإضافة", token),
 )
 
 @Composable
@@ -109,7 +109,7 @@ private fun CopyableField(field: SetupField, toasts: ToastState) {
 
         ShizziCompactIconButton(
             icon = Icons.Filled.ContentCopy,
-            contentDescription = "Copy ${field.label.lowercase()}",
+            contentDescription = "نسخ ${field.label}",
             onClick = {
                 clipboard.setText(AnnotatedString(field.value))
                 toasts.show(copiedToast(field.label))

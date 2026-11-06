@@ -14,7 +14,7 @@ class TetherSession(private val context: Context) {
 
     private var resources: SessionResources? = null
     private var state = SessionState.IDLE
-    private var detail = "not started"
+    private var detail = "لم تبدأ"
     private var interfaceName: String? = null
 
     private var activeSince: Long = 0
@@ -98,7 +98,7 @@ class TetherSession(private val context: Context) {
 
         state = SessionState.ACTIVE
         activeSince = System.currentTimeMillis()
-        detail = "tethered clients routing through $name"
+        detail = "الأجهزة المتصلة تمر عبر $name"
 
         teardown.installShutdownHook(started)
         startWatchdog(name)
@@ -112,7 +112,7 @@ class TetherSession(private val context: Context) {
         }
 
         check(vpnMode != VpnMode.ALWAYS || vpn.isVpnPresent()) {
-            "followVpn: vpn mode always requires an active VPN, none is connected"
+            "وضع VPN «دائمًا» يتطلب VPN نشطًا، ولا يوجد VPN متصل"
         }
         vpn.follow(group)
     }
@@ -144,7 +144,7 @@ class TetherSession(private val context: Context) {
         state = SessionState.ERROR
         detail = when (teardownProblem) {
             null -> problem
-            else -> "$problem; teardown incomplete: $teardownProblem"
+            else -> "$problem؛ لم يكتمل الإيقاف: $teardownProblem"
         }
     }
 
@@ -168,8 +168,8 @@ class TetherSession(private val context: Context) {
             .partition { (_, outcome) -> outcome.first }
         succeeded.forEach { (type, _) -> started.add(type) }
 
-        val failures = failed.map { (type, outcome) -> "${type.label} did not start (${outcome.second})" }
-        check(succeeded.isNotEmpty()) { "restartDownstream: ${failures.joinToString("; ")}" }
+        val failures = failed.map { (type, outcome) -> "تعذّر تشغيل ${type.label} (${outcome.second})" }
+        check(succeeded.isNotEmpty()) { "تعذّر تشغيل المشاركة: ${failures.joinToString("؛ ")}" }
 
         failures.forEach(SessionLog::warn)
         return awaitDownstreamTethered(succeeded.map { it.key })
@@ -202,7 +202,7 @@ class TetherSession(private val context: Context) {
             Thread.sleep(UPSTREAM_POLL_MS)
             observed = liveUpstreams(name)
         }
-        error("verifyUpstream: expected only $name, tethering reports $observed")
+        error("المتوقع اتصال $name فقط، لكن المشاركة تعرض $observed")
     }
 
     private fun liveUpstreams(owned: String): List<String> =
@@ -229,7 +229,7 @@ class TetherSession(private val context: Context) {
         interfaceName = null
         activeSince = 0
         state = if (downstreamProblem == null) SessionState.IDLE else SessionState.ERROR
-        detail = downstreamProblem ?: "stopped"
+        detail = downstreamProblem ?: "متوقف"
 
         when (downstreamProblem) {
             null -> SessionLog.info("session stopped; downstream confirmed down")

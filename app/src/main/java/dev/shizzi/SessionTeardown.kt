@@ -22,14 +22,14 @@ fun releaseDownstreamWith(
         if (stillTethered == null) {
             return when {
                 didAccept -> null
-                else -> "stopTethering was rejected, but no downstream remains tethered"
+                else -> "تم رفض طلب إيقاف المشاركة، لكن لم يبقَ أي اتصال مشارَك"
             }
         }
         if (attempt == DOWNSTREAM_STOP_ATTEMPTS) return stillTethered
 
         onRetry("$stillTethered; retrying stopTethering")
     }
-    return "downstream did not release after $DOWNSTREAM_STOP_ATTEMPTS attempts"
+    return "لم يتم تحرير المشاركة بعد $DOWNSTREAM_STOP_ATTEMPTS محاولات"
 }
 
 const val DOWNSTREAM_STOP_ATTEMPTS = 3
@@ -91,7 +91,7 @@ class SessionTeardown(private val context: Context) {
             stop = { attemptStop(control, types) },
             findTethered = {
                 runCatching { inspector.findTetheredDownstream(types).problem }
-                    .getOrElse { failure -> "could not verify downstream: ${failure.message}" }
+                    .getOrElse { failure -> "تعذّر التحقق من إيقاف المشاركة: ${failure.message}" }
             },
             onRetry = SessionLog::warn,
         )

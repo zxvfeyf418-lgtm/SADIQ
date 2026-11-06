@@ -59,21 +59,21 @@ private fun InstallFailureDetail(reason: String) {
 }
 
 private fun titleFor(state: CompatibilityState): String = when (state) {
-    is CompatibilityState.Staged -> "Restart your phone to finish"
-    is CompatibilityState.InstallFailed -> "The module wasn't accepted"
-    else -> "Tethering module"
+    is CompatibilityState.Staged -> "أعد تشغيل هاتفك لإكمال التثبيت"
+    is CompatibilityState.InstallFailed -> "لم يتم قبول الوحدة"
+    else -> "وحدة المشاركة"
 }
 
 private fun bodyFor(state: CompatibilityState): String = when (state) {
-    is CompatibilityState.Installing -> "Installing the module…"
+    is CompatibilityState.Installing -> "جارٍ تثبيت الوحدة…"
 
     is CompatibilityState.Staged ->
-        "The module is ready and will finish installing the next time your " +
-            "phone starts up. Come back here afterwards to check compatibility."
+        "الوحدة جاهزة وسيكتمل تثبيتها عند تشغيل هاتفك المرة القادمة. " +
+            "ارجع إلى هنا بعدها لفحص التوافق."
 
     is CompatibilityState.InstallFailed ->
-        "Your phone refused this module, which some manufacturers' builds do. " +
-            "Nothing was changed."
+        "رفض هاتفك هذه الوحدة، وهذا يحدث في بعض إصدارات الشركات المصنّعة. " +
+            "لم يتغير شيء."
 
-    else -> "The module is downloaded and verified, ready to install."
+    else -> "تم تنزيل الوحدة والتحقق منها، وهي جاهزة للتثبيت."
 }

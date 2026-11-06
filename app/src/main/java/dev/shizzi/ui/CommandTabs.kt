@@ -30,8 +30,8 @@ fun CommandTabs(
 }
 
 private fun labelFor(command: AutomationCommand): String = when (command) {
-    AutomationCommand.START -> "Start"
-    AutomationCommand.STOP -> "Stop"
-    AutomationCommand.TOGGLE -> "Toggle"
-    AutomationCommand.QUERY_STATUS -> "Status"
+    AutomationCommand.START -> "تشغيل"
+    AutomationCommand.STOP -> "إيقاف"
+    AutomationCommand.TOGGLE -> "تبديل"
+    AutomationCommand.QUERY_STATUS -> "الحالة"
 }

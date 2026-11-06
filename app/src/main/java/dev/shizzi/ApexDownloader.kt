@@ -32,7 +32,7 @@ class ApexDownloader(private val context: Context) {
         try {
             val status = connection.responseCode
             check(status == HttpURLConnection.HTTP_OK) {
-                "GET ${TetheringApex.URL} returned HTTP $status"
+                "فشل التنزيل من ${TetheringApex.URL}: رمز HTTP $status"
             }
 
             val digest = connection.inputStream.use { body ->
@@ -78,10 +78,10 @@ class ApexDownloader(private val context: Context) {
     private fun verify(destination: File, digest: String) {
         val size = destination.length()
         check(size == TetheringApex.SIZE_BYTES) {
-            "downloaded $size bytes, expected ${TetheringApex.SIZE_BYTES}"
+            "حجم الملف المنزَّل $size بايت، والمتوقع ${TetheringApex.SIZE_BYTES}"
         }
         check(digest == TetheringApex.SHA_256) {
-            "SHA-256 was $digest, expected ${TetheringApex.SHA_256}"
+            "بصمة SHA-256 هي $digest، والمتوقع ${TetheringApex.SHA_256}"
         }
     }
 

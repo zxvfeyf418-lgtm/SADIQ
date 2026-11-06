@@ -47,6 +47,9 @@ private fun cairo(weight: Int) = Font(
  */
 val AppFont = FontFamily(cairo(400), cairo(600), cairo(700))
 
+/** Heavy weights for the welcome screen. */
+val AppFontHeavy = FontFamily(cairo(800), cairo(900))
+
 object TwoN5aType {
     val title = TextStyle(fontFamily = AppFont, fontWeight = FontWeight.Bold, fontSize = 18.sp)
     val body = TextStyle(fontFamily = AppFont, fontWeight = FontWeight.Normal, fontSize = 15.sp)

@@ -18,3 +18,9 @@
 
 -keepattributes SourceFile,LineNumberTable
 -renamesourcefileattribute SourceFile
+
+# AmneziaWG library: native methods are looked up by class name from libam-go.
+-keep class org.amnezia.awg.** { *; }
+-dontwarn org.conscrypt.**
+-dontwarn org.bouncycastle.**
+-dontwarn org.openjsse.**

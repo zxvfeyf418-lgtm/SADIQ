@@ -51,6 +51,7 @@ private val ColumnAngles = listOf(
 fun EasterEggPage(onDismiss: () -> Unit) {
     val interaction = remember { MutableInteractionSource() }
 
+    dev.shizzi.ui.twon5a.TwoN5aRtl {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -64,6 +65,7 @@ fun EasterEggPage(onDismiss: () -> Unit) {
         contentAlignment = Alignment.Center,
     ) {
         TetheringPattern()
+    }
     }
 }
 

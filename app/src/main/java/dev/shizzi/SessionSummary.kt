@@ -1,8 +1,8 @@
 package dev.shizzi
 
 fun describeSession(elapsedMs: Long, traffic: Traffic): String =
-    "session summary: active ${formatDuration(elapsedMs)}, " +
-        "${Traffic.format(traffic.up)} up, ${Traffic.format(traffic.down)} down"
+    "ملخص الجلسة: مدة النشاط ${formatDuration(elapsedMs)}، " +
+        "الرفع ${Traffic.format(traffic.up)}، التنزيل ${Traffic.format(traffic.down)}"
 
 private fun formatDuration(millis: Long): String {
     val totalSeconds = millis / 1000
@@ -11,8 +11,8 @@ private fun formatDuration(millis: Long): String {
     val seconds = totalSeconds % 60
 
     return when {
-        hours > 0 -> "${hours}h ${minutes}m"
-        minutes > 0 -> "${minutes}m ${seconds}s"
-        else -> "${seconds}s"
+        hours > 0 -> "$hours س $minutes د"
+        minutes > 0 -> "$minutes د $seconds ث"
+        else -> "$seconds ث"
     }
 }

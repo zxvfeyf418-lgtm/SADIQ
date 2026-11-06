@@ -40,7 +40,7 @@ fun ColorPickerSheet(onConfirm: (Int) -> Unit, onDismiss: () -> Unit) {
 
     ThemedBottomSheet(onDismiss = onDismiss) {
         Text(
-            text = "Color picker",
+            text = "منتقي الألوان",
             style = ShizziTheme.typography.heading,
             color = ShizziTheme.colors.onSurface,
         )
@@ -93,7 +93,7 @@ private fun AddColorButton(onClick: () -> Unit) {
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            text = themedLabel("Add color"),
+            text = themedLabel("إضافة لون"),
             style = ShizziTheme.typography.title,
             color = colors.onPrimary,
         )

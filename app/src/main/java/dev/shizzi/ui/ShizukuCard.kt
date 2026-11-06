@@ -44,9 +44,9 @@ fun ShizukuCard(state: ShizukuState, onGrant: () -> Unit) {
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(ShizziTheme.spacing.sm),
         ) {
-            StatusRow(name = "Status", value = statusText(state))
-            StatusRow(name = "Service", value = serviceText(state))
-            StatusRow(name = "Version", value = ShizukuGate.installedVersion() ?: "Not installed")
+            StatusRow(name = "الحالة", value = statusText(state))
+            StatusRow(name = "الخدمة", value = serviceText(state))
+            StatusRow(name = "الإصدار", value = ShizukuGate.installedVersion() ?: "غير مثبّت")
 
             if (state is ShizukuState.PermissionRequired) {
                 GrantButton(onGrant)
@@ -86,7 +86,7 @@ private fun GrantButton(onGrant: () -> Unit) {
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            text = "GRANT PERMISSION",
+            text = "منح الإذن",
             style = ShizziTheme.typography.label,
             color = ShizziTheme.colors.onPrimary,
         )
@@ -94,10 +94,10 @@ private fun GrantButton(onGrant: () -> Unit) {
 }
 
 private fun statusText(state: ShizukuState): String = when (state) {
-    is ShizukuState.Ready -> "Ready"
-    ShizukuState.NotInstalled -> "Not installed"
-    ShizukuState.NotRunning -> "Not running"
-    ShizukuState.PermissionRequired -> "Permission required"
+    is ShizukuState.Ready -> "جاهز"
+    ShizukuState.NotInstalled -> "غير مثبّت"
+    ShizukuState.NotRunning -> "غير قيد التشغيل"
+    ShizukuState.PermissionRequired -> "الإذن مطلوب"
 }
 
 private fun serviceText(state: ShizukuState): String = when (state) {

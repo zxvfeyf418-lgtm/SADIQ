@@ -27,11 +27,11 @@ fun ClearLogToast(
         toasts.show(
             Toast(
                 key = ToastKeys.CLEAR_LOG,
-                message = "Clear the log?",
-                detail = "This action cannot be undone.",
+                message = "مسح السجل؟",
+                detail = "لا يمكن التراجع عن هذا الإجراء.",
 
                 duration = ToastDuration.Indefinite,
-                action = ToastAction("Clear") {
+                action = ToastAction("مسح") {
                     isAnswered = true
                     confirm()
                 },
@@ -44,12 +44,12 @@ fun ClearLogToast(
 fun clearedToast(problem: String?): Toast = when (problem) {
     null -> Toast(
         key = ToastKeys.CLEAR_LOG,
-        message = "Log cleared",
+        message = "تم مسح السجل",
     )
 
     else -> Toast(
         key = ToastKeys.CLEAR_LOG,
-        message = "Cleared this app's entries only",
+        message = "تم مسح سجلات هذا التطبيق فقط",
         detail = problem,
         duration = ToastDuration.Indefinite,
     )

@@ -101,6 +101,6 @@ class VpnWatchdog(
         const val MISSES_BEFORE_TEARDOWN = 2
 
         const val VPN_LOST_DETAIL =
-            "VPN disconnected. Session stopped to keep devices protected."
+            "انقطع اتصال VPN. تم إيقاف الجلسة لحماية الأجهزة."
     }
 }

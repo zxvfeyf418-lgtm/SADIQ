@@ -119,9 +119,10 @@ fun LogPage(
         onCancel = { isConfirmingClear = false },
     )
 
+    dev.shizzi.ui.twon5a.TwoN5aRtl {
     Column(modifier = Modifier.fillMaxSize().systemBarsPadding()) {
         ScreenHeader(
-            title = "Log",
+            title = "السجل",
             onBack = actions.onBack,
             action = {
 
@@ -142,8 +143,8 @@ fun LogPage(
 
                         OverflowItem(
                             label = when {
-                                isAllSelected -> "DESELECT ALL"
-                                else -> "SELECT ALL"
+                                isAllSelected -> "إلغاء تحديد الكل"
+                                else -> "تحديد الكل"
                             },
                             onClick = {
                                 selected = when {
@@ -154,7 +155,7 @@ fun LogPage(
                         )
 
                         OverflowItem(
-                            label = "CLEAR",
+                            label = "مسح",
                             onClick = { isConfirmingClear = true },
                         )
                     }
@@ -215,13 +216,16 @@ fun LogPage(
             )
         }
     }
+    }
 }
 
 
 private fun copyLabel(count: Int, total: Int): String = when {
-    count == 0 || count == total -> "COPY ALL"
-    count == 1 -> "COPY 1 LINE"
-    else -> "COPY $count LINES"
+    count == 0 || count == total -> "نسخ الكل"
+    count == 1 -> "نسخ سطر واحد"
+    count == 2 -> "نسخ سطرين"
+    count in 3..10 -> "نسخ $count أسطر"
+    else -> "نسخ $count سطرًا"
 }
 
 private fun copyText(entries: List<LogEntry>, selected: Set<Int>): String = entries

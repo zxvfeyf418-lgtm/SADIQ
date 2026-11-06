@@ -54,8 +54,7 @@ class SessionResources(
             .onFailure { failure ->
                 keepAliveCallback = null
                 throw IllegalStateException(
-                    "requestKeepAlive: could not request the test network, " +
-                        "it would be lingered away within seconds",
+                    "تعذّر طلب الشبكة التجريبية، وستُغلق خلال ثوانٍ",
                     failure,
                 )
             }
@@ -63,12 +62,12 @@ class SessionResources(
 
     fun startDatapath(mtu: Int) {
         val descriptor = fileDescriptor
-            ?: error("startDatapath: no TUN fd; acquire() must succeed first")
+            ?: error("لا يوجد واصف TUN؛ يجب أن ينجح إنشاء الشبكة أولًا")
 
         datapathSession = runCatching { Datapath.start(descriptor.fd.toLong(), mtu.toLong()) }
             .getOrElse { failure ->
                 throw IllegalStateException(
-                    "startDatapath: userspace stack failed to attach to fd " +
+                    "تعذّر ربط مكدّس الشبكة بالواصف " +
                         "${descriptor.fd} (mtu=$mtu)",
                     failure,
                 )
@@ -77,7 +76,7 @@ class SessionResources(
 
     fun bindDatapathTo(handle: Long) {
         val session = datapathSession
-            ?: error("bindDatapathTo($handle): no datapath session; startDatapath must succeed first")
+            ?: error("لا توجد جلسة مسار بيانات للمقبض $handle؛ يجب أن ينجح بدء المسار أولًا")
 
         session.setNetwork(handle)
     }
@@ -89,7 +88,7 @@ class SessionResources(
             findNetworkOn(interfaceName)?.let { return it }
             Thread.sleep(POLL_INTERVAL_MS)
         }
-        error("test network '$interfaceName' did not become available within ${timeoutMs}ms")
+        error("لم تصبح الشبكة التجريبية '$interfaceName' متاحة خلال ${timeoutMs} ملّي ثانية")
     }
 
     private fun findNetworkOn(interfaceName: String): Network? =

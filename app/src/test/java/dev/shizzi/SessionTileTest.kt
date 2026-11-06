@@ -13,7 +13,7 @@ class SessionTileTest {
         val render = SessionTile.render(SessionUiState(), ShizukuState.NotInstalled, false)
 
         assertEquals(Tile.STATE_UNAVAILABLE, render.state)
-        assertEquals("Shizuku not installed", render.subtitle)
+        assertEquals("Shizuku غير مثبّت", render.subtitle)
         assertEquals(TileAction.OPEN_APP, render.action)
     }
 
@@ -23,8 +23,8 @@ class SessionTileTest {
         val ungranted =
             SessionTile.render(SessionUiState(), ShizukuState.PermissionRequired, false)
 
-        assertEquals("Shizuku not running", stopped.subtitle)
-        assertEquals("Permission required", ungranted.subtitle)
+        assertEquals("Shizuku لا يعمل", stopped.subtitle)
+        assertEquals("الإذن مطلوب", ungranted.subtitle)
     }
 
     @Test
@@ -32,7 +32,7 @@ class SessionTileTest {
         val render = SessionTile.render(SessionUiState(status = UiStatus.READY), ready, false)
 
         assertEquals(Tile.STATE_INACTIVE, render.state)
-        assertEquals("Tap to share", render.subtitle)
+        assertEquals("اضغط للمشاركة", render.subtitle)
         assertEquals(TileAction.START, render.action)
     }
 
@@ -41,7 +41,7 @@ class SessionTileTest {
         val render = SessionTile.render(SessionUiState(status = UiStatus.LOADING), ready, false)
 
         assertEquals(Tile.STATE_UNAVAILABLE, render.state)
-        assertEquals("Starting…", render.subtitle)
+        assertEquals("جارٍ التشغيل…", render.subtitle)
         assertEquals(TileAction.NONE, render.action)
     }
 
@@ -49,7 +49,7 @@ class SessionTileTest {
     fun `says it is stopping while tearing a session down`() {
         val render = SessionTile.render(SessionUiState(status = UiStatus.LOADING), ready, true)
 
-        assertEquals("Stopping…", render.subtitle)
+        assertEquals("جارٍ الإيقاف…", render.subtitle)
         assertEquals(TileAction.NONE, render.action)
     }
 
@@ -69,9 +69,9 @@ class SessionTileTest {
         val one = none.copy(clientCount = 1, traffic = Traffic(down = 2_000))
         val many = none.copy(clientCount = 3, traffic = Traffic(down = 2_000))
 
-        assertEquals("No devices", SessionTile.render(none, ready, false).subtitle)
-        assertEquals("1 device · 2.0 KB", SessionTile.render(one, ready, false).subtitle)
-        assertEquals("3 devices · 2.0 KB", SessionTile.render(many, ready, false).subtitle)
+        assertEquals("لا توجد أجهزة", SessionTile.render(none, ready, false).subtitle)
+        assertEquals("جهاز واحد · 2.0 KB", SessionTile.render(one, ready, false).subtitle)
+        assertEquals("3 أجهزة · 2.0 KB", SessionTile.render(many, ready, false).subtitle)
     }
 
     @Test
@@ -79,7 +79,7 @@ class SessionTileTest {
         val render = SessionTile.render(SessionUiState(status = UiStatus.ERROR), ready, false)
 
         assertEquals(Tile.STATE_INACTIVE, render.state)
-        assertEquals("Tap to retry", render.subtitle)
+        assertEquals("اضغط لإعادة المحاولة", render.subtitle)
         assertEquals(TileAction.START, render.action)
     }
 }

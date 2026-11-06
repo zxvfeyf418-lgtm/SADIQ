@@ -35,7 +35,7 @@ fun permissionRows(
     }
 }
 
-private const val SHIZUKU_RATIONALE = "Required for core functionality"
+private const val SHIZUKU_RATIONALE = "مطلوب لعمل التطبيق الأساسي"
 
 private fun shizukuRow(state: ShizukuState, onAct: () -> Unit) = PermissionRowState(
     title = "Shizuku",

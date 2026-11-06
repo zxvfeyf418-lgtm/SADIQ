@@ -29,52 +29,47 @@ class SessionNotification(private val context: Context) {
     private fun titleFor(state: SessionUiState, isStopping: Boolean): String =
         when (state.status) {
             UiStatus.CONNECTED -> connectedTitle(state)
-            UiStatus.LOADING -> if (isStopping) "Cleaning up…" else "Getting ready…"
-            UiStatus.ERROR -> "Session ended"
-            UiStatus.READY -> "Session ended"
+            UiStatus.LOADING -> if (isStopping) "جارٍ التنظيف…" else "جارٍ التحضير…"
+            UiStatus.ERROR -> "انتهت الجلسة"
+            UiStatus.READY -> "انتهت الجلسة"
         }
 
     private fun connectedTitle(state: SessionUiState): String = when {
-        state.isWaitingForUsb -> "Waiting for USB"
-        state.isVpnBypassed -> "Connected · VPN ignored"
-        state.isVpnBound -> "Connected · VPN"
-        else -> "Connected"
+        state.isWaitingForUsb -> "بانتظار USB"
+        state.isVpnBypassed -> "متصل · تم تجاهل VPN"
+        state.isVpnBound -> "متصل · VPN"
+        else -> "متصل"
     }
 
     private fun bodyFor(state: SessionUiState, isStopping: Boolean): String = when {
         state.lastError.isNotEmpty() -> userFacingError(state.lastError)
         state.status == UiStatus.LOADING -> loadingBody(isStopping)
-        state.isWaitingForUsb -> "Connect over USB within $USB_GRACE_MINUTES minutes to keep sharing"
+        state.isWaitingForUsb -> "وصّل كابل USB خلال $USB_GRACE_MINUTES دقيقة لتستمر المشاركة"
         state.status == UiStatus.CONNECTED -> connectedBody(state)
-        else -> "Not sharing"
+        else -> "لا توجد مشاركة"
     }
 
     private fun userFacingError(raw: String): String = when {
-        raw.contains(EXCEPTION_MARKER) -> "Something went wrong. Check the app for details."
+        raw.contains(EXCEPTION_MARKER) -> "حدث خطأ. افتح التطبيق لمعرفة التفاصيل."
         else -> raw
     }
 
     private fun loadingBody(isStopping: Boolean): String =
-        if (isStopping) "Turning the hotspot off…" else "Turning the hotspot on…"
+        if (isStopping) "جارٍ إيقاف النقطة الساخنة…" else "جارٍ تشغيل النقطة الساخنة…"
 
     private fun connectedBody(state: SessionUiState): String = when (state.clientCount) {
-        0 -> "No devices connected"
-        else -> "${deviceCount(state.clientCount)} · " +
+        0 -> "لا توجد أجهزة متصلة"
+        else -> "${SessionTile.deviceCount(state.clientCount)} · " +
             "$DOWN_ARROW ${Traffic.format(state.traffic.down)} · " +
             "$UP_ARROW ${Traffic.format(state.traffic.up)}"
     }
 
-    private fun deviceCount(clients: Int): String = when (clients) {
-        1 -> "1 device"
-        else -> "$clients devices"
-    }
-
     fun describeLoss(problem: String?): String = when (problem) {
-        null -> "Shizuku stopped, so the session ended. The hotspot was turned off. " +
-            "Start again when you are ready."
+        null -> "توقف Shizuku فانتهت الجلسة. تم إيقاف النقطة الساخنة. " +
+            "ابدأ من جديد عندما تكون جاهزًا."
 
-        else -> "The session ended but the hotspot may still be on: $problem — " +
-            "turn it off in Settings."
+        else -> "انتهت الجلسة لكن النقطة الساخنة قد تكون ما زالت تعمل: $problem — " +
+            "أوقفها من الإعدادات."
     }
 
     private fun openAppIntent(): PendingIntent = PendingIntent.getActivity(
@@ -86,7 +81,7 @@ class SessionNotification(private val context: Context) {
 
     private fun stopAction(): Notification.Action = Notification.Action.Builder(
         null,
-        "Stop",
+        "إيقاف",
         PendingIntent.getService(
             context,
             1,
@@ -100,9 +95,9 @@ class SessionNotification(private val context: Context) {
 
         val channel = NotificationChannel(
             CHANNEL_ID,
-            "Tethering session",
+            "جلسة المشاركة",
             NotificationManager.IMPORTANCE_LOW,
-        ).apply { description = "Shown while a tethering session is running" }
+        ).apply { description = "يظهر أثناء تشغيل جلسة المشاركة" }
 
         notificationManager().createNotificationChannel(channel)
     }

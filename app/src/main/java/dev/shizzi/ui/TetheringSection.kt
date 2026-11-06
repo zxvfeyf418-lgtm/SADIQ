@@ -18,16 +18,16 @@ fun TetheringSection(
     var isPickerOpen by remember { mutableStateOf(false) }
 
     SettingsChoice(
-        label = SettingsText(title = "USB tethering"),
+        label = SettingsText(title = "مشاركة الإنترنت عبر USB"),
         value = usbTetheringLabel(selected),
         onClick = { isPickerOpen = true },
     )
 
     SettingsAction(
-        label = SettingsText(title = "Open system settings"),
+        label = SettingsText(title = "فتح إعدادات النظام"),
         isExternal = true,
         onClick = {
-            if (!context.openTetherSettings()) toasts.show(unopenedToast("system settings"))
+            if (!context.openTetherSettings()) toasts.show(unopenedToast("إعدادات النظام"))
         },
     )
 

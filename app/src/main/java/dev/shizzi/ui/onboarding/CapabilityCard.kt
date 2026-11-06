@@ -89,14 +89,14 @@ private fun StatusMark(status: CapabilityStatus) {
 
             CapabilityStatus.SUCCESS -> Icon(
                 imageVector = Icons.Filled.Check,
-                contentDescription = "Supported",
+                contentDescription = "مدعوم",
                 tint = colors.primary,
                 modifier = Modifier.size(MarkSize),
             )
 
             CapabilityStatus.FAILURE -> Icon(
                 imageVector = Icons.Filled.Close,
-                contentDescription = "Not supported",
+                contentDescription = "غير مدعوم",
                 tint = colors.onSurfaceMuted,
                 modifier = Modifier.size(MarkSize),
             )
@@ -105,16 +105,15 @@ private fun StatusMark(status: CapabilityStatus) {
 }
 
 private fun titleFor(capability: Capability): String = when (capability) {
-    Capability.TEST_NETWORK -> "Test network API"
-    Capability.PREFER_TEST_NETWORKS -> "Prefer test networks"
+    Capability.TEST_NETWORK -> "واجهة شبكة الاختبار"
+    Capability.PREFER_TEST_NETWORKS -> "تفضيل شبكات الاختبار"
 }
 
 private fun descriptionFor(capability: Capability): String = when (capability) {
     Capability.TEST_NETWORK ->
-        "Lets the app create the test network tunnel your hotspot traffic " +
-            "travels through."
+        "يتيح للتطبيق إنشاء نفق شبكة الاختبار الذي تمر عبره بيانات نقطة الاتصال."
 
     Capability.PREFER_TEST_NETWORKS ->
-        "Lets the app route the hotspot through the test network tunnel. " +
-            "Added in Android 13."
+        "يتيح للتطبيق توجيه نقطة الاتصال عبر نفق شبكة الاختبار. " +
+            "أُضيف في Android 13."
 }

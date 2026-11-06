@@ -33,7 +33,8 @@ import dev.shizzi.ui.twon5a.TwoN5aHome
 import dev.shizzi.ui.twon5a.TwoN5aHomeActions
 import dev.shizzi.ui.twon5a.TwoN5aSettings
 import dev.shizzi.ui.twon5a.TwoN5aSettingsActions
-import dev.shizzi.vpn.VpnActions
+import dev.shizzi.ui.twon5a.WarpActions
+import dev.shizzi.ui.twon5a.WarpScreen
 
 data class AppActions(
     val onToggle: () -> Unit,
@@ -55,7 +56,18 @@ data class AppActions(
     val onRestartOnboarding: () -> Unit,
     val onSetAutomation: (Boolean) -> Unit,
     val onRegenerateAutomationToken: () -> Unit,
-    val vpn: VpnActions,
+    val onGenerateWarp: () -> Unit,
+    val onSetWarpObfuscated: (Boolean) -> Unit,
+    val onSelectWarpEndpoint: (Int) -> Unit,
+    val onSaveWarp: () -> Unit,
+    val onWarpMessage: (String) -> Unit,
+    val onSelectConfig: (String) -> Unit,
+    val onDeleteConfig: (String) -> Unit,
+    val onImportConfig: () -> Unit,
+    val onConnect: (String) -> Unit,
+    val onDisconnect: () -> Unit,
+    val onRunWarpInApp: () -> Unit,
+    val onDismissConnectionMessage: () -> Unit,
 )
 
 
@@ -125,6 +137,7 @@ private fun ScreenBody(screen: Screen, context: ScreenContext) {
         Screen.ADVANCED -> SettingsRoute(context)
         Screen.LOG -> LogRoute(context)
         Screen.EASTER_EGG -> EasterEggPage(onDismiss = context.navigation.goHome)
+        Screen.WARP -> WarpRoute(context)
     }
 }
 
@@ -134,13 +147,36 @@ private fun HomeRoute(context: ScreenContext) {
 
     TwoN5aHome(
         session = context.state.session,
-        vpn = context.state.vpn.state,
-        selected = context.state.vpn.servers.selected,
         actions = TwoN5aHomeActions(
-            onToggleVpn = actions.vpn.onToggle,
+            onOpenWarp = { context.navigation.open(Screen.WARP) },
             onToggleSharing = actions.onToggle,
             onOpenSettings = { context.navigation.open(Screen.SETTINGS) },
             onOpenEasterEgg = { context.navigation.open(Screen.EASTER_EGG) },
+        ),
+    )
+}
+
+@Composable
+private fun WarpRoute(context: ScreenContext) {
+    val actions = context.actions
+
+    WarpScreen(
+        state = context.state.warp,
+        connection = context.state.connection,
+        actions = WarpActions(
+            onBack = context.navigation.goHome,
+            onGenerate = actions.onGenerateWarp,
+            onSetObfuscated = actions.onSetWarpObfuscated,
+            onSelectEndpoint = actions.onSelectWarpEndpoint,
+            onSave = actions.onSaveWarp,
+            onMessage = actions.onWarpMessage,
+            onSelectConfig = actions.onSelectConfig,
+            onDeleteConfig = actions.onDeleteConfig,
+            onImport = actions.onImportConfig,
+            onConnect = actions.onConnect,
+            onDisconnect = actions.onDisconnect,
+            onRunInApp = actions.onRunWarpInApp,
+            onDismissConnectionMessage = actions.onDismissConnectionMessage,
         ),
     )
 }
@@ -150,16 +186,10 @@ private fun TwoN5aSettingsRoute(context: ScreenContext) {
     val actions = context.actions
 
     TwoN5aSettings(
-        vpn = context.state.vpn,
         shizuku = context.state.session.shizukuState,
         vpnMode = context.state.settings.vpnMode,
         actions = TwoN5aSettingsActions(
             onBack = context.navigation.goHome,
-            onSave = actions.vpn.onSave,
-            onSelect = actions.vpn.onSelect,
-            onRemove = actions.vpn.onRemove,
-            onTestAll = actions.vpn.onTestAll,
-            onClearFeedback = actions.vpn.onClearFeedback,
             onSetVpnMode = actions.onSetVpnMode,
             onShizukuAction = actions.onShizukuAction,
             onRunChecks = actions.onRunProbes,

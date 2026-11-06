@@ -20,7 +20,7 @@ object SessionTile {
         return when (session.status) {
             UiStatus.LOADING -> TileRender(
                 state = Tile.STATE_UNAVAILABLE,
-                subtitle = if (isStopping) "Stopping…" else "Starting…",
+                subtitle = if (isStopping) "جارٍ الإيقاف…" else "جارٍ التشغيل…",
                 action = TileAction.NONE,
             )
 
@@ -32,13 +32,13 @@ object SessionTile {
 
             UiStatus.ERROR -> TileRender(
                 state = Tile.STATE_INACTIVE,
-                subtitle = "Tap to retry",
+                subtitle = "اضغط لإعادة المحاولة",
                 action = TileAction.START,
             )
 
             UiStatus.READY -> TileRender(
                 state = Tile.STATE_INACTIVE,
-                subtitle = "Tap to share",
+                subtitle = "اضغط للمشاركة",
                 action = TileAction.START,
             )
         }
@@ -51,15 +51,22 @@ object SessionTile {
     )
 
     private fun describe(shizuku: ShizukuState): String = when (shizuku) {
-        ShizukuState.NotInstalled -> "Shizuku not installed"
-        ShizukuState.NotRunning -> "Shizuku not running"
-        ShizukuState.PermissionRequired -> "Permission required"
+        ShizukuState.NotInstalled -> "Shizuku غير مثبّت"
+        ShizukuState.NotRunning -> "Shizuku لا يعمل"
+        ShizukuState.PermissionRequired -> "الإذن مطلوب"
         is ShizukuState.Ready -> ""
     }
 
     private fun describeConnected(session: SessionUiState): String = when (session.clientCount) {
-        0 -> "No devices"
-        1 -> "1 device · ${Traffic.format(session.traffic.down)}"
-        else -> "${session.clientCount} devices · ${Traffic.format(session.traffic.down)}"
+        0 -> "لا توجد أجهزة"
+        else -> "${deviceCount(session.clientCount)} · ${Traffic.format(session.traffic.down)}"
+    }
+
+    /** Arabic count phrase with the correct number agreement. */
+    fun deviceCount(clients: Int): String = when (clients) {
+        1 -> "جهاز واحد"
+        2 -> "جهازان"
+        in 3..10 -> "$clients أجهزة"
+        else -> "$clients جهازًا"
     }
 }

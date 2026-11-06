@@ -55,10 +55,8 @@ jobs:
           go install golang.org/x/mobile/cmd/gomobile@latest
           gomobile init
 
-      - name: Resolve Go dependencies (embedded Xray core)
-        # Xray is pinned by commit in resolve-deps.sh (its tags are not valid Go versions);
-        # go.sum for its dependency tree is generated here,
-        # not committed. Needs the Go module proxy, which GitHub runners have.
+      - name: Resolve Go dependencies
+        # gomobile needs golang.org/x/mobile/bind in go.mod; resolve-deps.sh adds it.
         run: ./datapath/resolve-deps.sh
 
       - name: Set up Gradle
@@ -81,7 +79,7 @@ jobs:
           cd datapath
           CGO_ENABLED=1 GOOS=android GOARCH=arm64 CC="$CC" go vet ./...
 
-      - name: Unit tests (parser, Xray config, Shizzi logic)
+      - name: Unit tests (WARP config, X25519, Shizzi logic)
         run: ./gradlew testDebugUnitTest --no-daemon
 
       - name: Build debug APK

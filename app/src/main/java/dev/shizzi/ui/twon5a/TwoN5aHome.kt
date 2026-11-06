@@ -43,18 +43,14 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.shizzi.SessionUiState
 import dev.shizzi.UiStatus
-import dev.shizzi.vpn.ProxyConfig
-import dev.shizzi.vpn.VpnState
-import dev.shizzi.vpn.isActive
 import kotlinx.coroutines.delay
 
 data class TwoN5aHomeActions(
-    val onToggleVpn: () -> Unit,
+    val onOpenWarp: () -> Unit,
     val onToggleSharing: () -> Unit,
     val onOpenSettings: () -> Unit,
     val onOpenEasterEgg: () -> Unit,
@@ -63,14 +59,11 @@ data class TwoN5aHomeActions(
 @Composable
 fun TwoN5aHome(
     session: SessionUiState,
-    vpn: VpnState,
-    selected: ProxyConfig?,
     actions: TwoN5aHomeActions,
 ) {
     TwoN5aRtl {
         val isSharing = session.status == UiStatus.CONNECTED
         val isSharingBusy = session.status == UiStatus.LOADING
-        val isVpnOn = vpn.isActive
 
         Box(
             modifier = Modifier
@@ -78,12 +71,12 @@ fun TwoN5aHome(
                 .background(TwoN5aColors.Background)
                 .systemBarsPadding(),
         ) {
-            TopBar(selected, vpn, actions.onOpenSettings)
+            TopBar(actions.onOpenSettings)
 
             SharingToast(isSharing = isSharing, modifier = Modifier.align(Alignment.TopCenter).padding(top = 12.dp))
 
             SignalRing(
-                isLive = isSharing || vpn is VpnState.Connected,
+                isLive = isSharing,
                 modifier = Modifier.align(Alignment.Center).size(260.dp),
             )
 
@@ -94,25 +87,12 @@ fun TwoN5aHome(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(14.dp),
             ) {
-                if (vpn is VpnState.Failed) {
-                    Text(
-                        text = vpn.message,
-                        style = TwoN5aType.caption,
-                        color = TwoN5aColors.Bad,
-                        textAlign = TextAlign.Center,
-                    )
-                }
-
                 PrimaryButton(
-                    text = when {
-                        vpn is VpnState.Connecting -> "جارٍ الاتصال…"
-                        isVpnOn -> "إيقاف VPN"
-                        else -> "تشغيل VPN"
-                    },
+                    text = "إنشاء ملفات",
                     fill = TwoN5aColors.MagentaStrong,
                     content = Color.Black,
-                    enabled = isVpnOn || selected != null,
-                    onClick = actions.onToggleVpn,
+                    enabled = true,
+                    onClick = actions.onOpenWarp,
                 )
 
                 SecondaryButton(
@@ -125,35 +105,20 @@ fun TwoN5aHome(
                     onClick = actions.onToggleSharing,
                 )
 
-                Footer(session = session, vpn = vpn, onVersionClick = actions.onOpenEasterEgg)
+                Footer(session = session, onVersionClick = actions.onOpenEasterEgg)
             }
         }
     }
 }
 
 @Composable
-private fun TopBar(selected: ProxyConfig?, vpn: VpnState, onOpenSettings: () -> Unit) {
+private fun TopBar(onOpenSettings: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        // In RTL the first child sits on the right: server chip right, gear left.
-        if (selected != null) {
-            Row(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(50))
-                    .background(TwoN5aColors.Card)
-                    .padding(horizontal = 14.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Box(
-                    Modifier.size(8.dp).clip(CircleShape)
-                        .background(if (vpn is VpnState.Connected) TwoN5aColors.Good else TwoN5aColors.TextMuted),
-                )
-                Spacer(Modifier.size(8.dp))
-                Text(selected.name, style = TwoN5aType.caption, color = TwoN5aColors.TextMuted, maxLines = 1)
-            }
-        }
+        // In RTL the first child sits on the right: app name right, gear left.
+        Text("2n5a", style = TwoN5aType.title, color = TwoN5aColors.TextMuted)
         Spacer(Modifier.weight(1f))
         Icon(
             imageVector = Icons.Filled.Settings,
@@ -262,24 +227,23 @@ private fun SecondaryButton(text: String, enabled: Boolean, onClick: () -> Unit)
 }
 
 @Composable
-private fun Footer(session: SessionUiState, vpn: VpnState, onVersionClick: () -> Unit) {
-    val status = when {
-        session.status == UiStatus.CONNECTED -> "SHARING ACTIVE"
-        vpn is VpnState.Connected -> "VPN ACTIVE"
-        vpn is VpnState.Connecting || session.status == UiStatus.LOADING -> "CONNECTING"
-        else -> "IDLE"
+private fun Footer(session: SessionUiState, onVersionClick: () -> Unit) {
+    val status = when (session.status) {
+        UiStatus.CONNECTED -> "المشاركة شغّالة"
+        UiStatus.LOADING -> "جارٍ التجهيز"
+        else -> "متوقف"
     }
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 6.dp)) {
         Text(
-            "V1.0.0",
-            style = TwoN5aType.caption.copy(letterSpacing = 2.sp),
+            "v1.0.0",
+            style = TwoN5aType.caption,
             color = TwoN5aColors.TextMuted.copy(alpha = 0.6f),
             modifier = Modifier.clickable(onClick = onVersionClick),
         )
         Text("   |   ", style = TwoN5aType.caption, color = TwoN5aColors.TextMuted.copy(alpha = 0.4f))
         Text(
-            "STATUS $status",
-            style = TwoN5aType.caption.copy(letterSpacing = 2.sp),
+            "الحالة: $status",
+            style = TwoN5aType.caption,
             color = TwoN5aColors.TextMuted.copy(alpha = 0.6f),
         )
     }
